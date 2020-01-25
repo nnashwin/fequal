@@ -65,7 +65,7 @@ func AreEqual(fName1, fName2 string) (bool, error) {
 	}
 }
 
-func AreEqualTimed(fName1, fName2 string) (bool, error) {
+func AreEqualTimed(fName1, fName2 string, dur time.Duration) (bool, error) {
 	f1, err := os.Open(fName1)
 	if err != nil {
 		return false, err
@@ -79,12 +79,12 @@ func AreEqualTimed(fName1, fName2 string) (bool, error) {
 	defer f2.Close()
 
 	start := time.Now()
-	err = f1.SetReadDeadline(start.Add(time.Second * 30))
+	err = f1.SetReadDeadline(start.Add(dur))
 	if err != nil {
 		fmt.Printf("The first file %s one can not have a timeout set\n", fName1)
 	}
 
-	err = f2.SetReadDeadline(start.Add(time.Second * 30))
+	err = f2.SetReadDeadline(start.Add(dur))
 	if err != nil {
 		fmt.Printf("The second file %s one can not have a timeout set\n", fName2)
 	}
